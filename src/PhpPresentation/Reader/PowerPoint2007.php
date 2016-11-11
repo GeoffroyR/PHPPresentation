@@ -595,7 +595,12 @@ class PowerPoint2007 implements ReaderInterface
                 $pathImage = implode('/', $pathImage);
                 $contentImg = $this->oZip->getFromName($pathImage);
 
-                $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPpt2007Bkg');
+                $ext = pathinfo($pathImage, PATHINFO_EXTENSION);
+                while (true) {
+                    $filename = uniqid('PhpPresentationReaderPpt2007Bkg', true) . '.' . $ext;
+                    $tmpBkgImg = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $filename;
+                    if (!file_exists($tmpBkgImg)) break;
+                }
                 file_put_contents($tmpBkgImg, $contentImg);
                 // Background
                 $oBackground = new Image();
