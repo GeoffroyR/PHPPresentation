@@ -96,11 +96,18 @@ abstract class AbstractWriter
         // Get an array of all drawings
         $aDrawings  = array();
 
-        // Loop trough PhpPresentation
+        // Loop trough PhpPresentation Slides
         foreach ($this->getPhpPresentation()->getAllSlides() as $oSlide) {
             $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
             $aDrawings = array_merge($aDrawings, $arrayReturn);
         }
+
+        // Loop trough PhpPresentation SlidesMasters
+        foreach ($this->getPhpPresentation()->getAllMasterSlides() as $mSlide) {
+            $arrayReturn = $this->iterateCollection($mSlide->getShapeCollection()->getIterator());
+            $aDrawings = array_merge($aDrawings, $arrayReturn);
+        }
+
         return $aDrawings;
     }
 

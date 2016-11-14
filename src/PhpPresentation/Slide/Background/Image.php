@@ -79,9 +79,7 @@ class Image extends AbstractBackground
      */
     public function getExtension()
     {
-        $exploded = explode('.', basename($this->path));
-
-        return $exploded[count($exploded) - 1];
+        return pathinfo($this->path, PATHINFO_EXTENSION);
     }
 
     /**
