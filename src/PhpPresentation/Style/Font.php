@@ -44,6 +44,11 @@ class Font implements ComparableInterface
     const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
     const UNDERLINE_WORDS = 'words';
 
+    /* Strike through types */
+    const STRIKE_NONE = 'noStrike';
+    const STRIKE_SINGLE = 'sngStrike';
+    const STRIKE_DOUBLE = 'dblStrike';
+
     /**
      * Name
      *
@@ -127,7 +132,7 @@ class Font implements ComparableInterface
         $this->superScript   = false;
         $this->subScript     = false;
         $this->underline     = self::UNDERLINE_NONE;
-        $this->strikethrough = false;
+        $this->strikethrough = self::STRIKE_NONE;
         $this->color         = new Color(Color::COLOR_BLACK);
     }
 
@@ -316,11 +321,16 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Strikethrough
+     * IS Strikethrough
      *
      * @return boolean
      */
     public function isStrikethrough()
+    {
+        return $this->strikethrough !== self::STRIKE_NONE;
+    }
+
+    public function getStrikethrough()
     {
         return $this->strikethrough;
     }
@@ -328,13 +338,13 @@ class Font implements ComparableInterface
     /**
      * Set Strikethrough
      *
-     * @param  boolean                  $pValue
+     * @param  string                  $pValue
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setStrikethrough($pValue = false)
+    public function setStrikethrough($pValue = self::STRIKE_NONE)
     {
-        if ($pValue == '') {
-            $pValue = false;
+        if (empty($pValue)) {
+            $pValue = self::STRIKE_NONE;
         }
         $this->strikethrough = $pValue;
 
@@ -375,7 +385,7 @@ class Font implements ComparableInterface
      */
     public function getHashCode()
     {
-        return md5($this->name . $this->size . ($this->bold ? 't' : 'f') . ($this->italic ? 't' : 'f') . ($this->superScript ? 't' : 'f') . ($this->subScript ? 't' : 'f') . $this->underline . ($this->strikethrough ? 't' : 'f') . $this->color->getHashCode() . __CLASS__);
+        return md5($this->name . $this->size . ($this->bold ? 't' : 'f') . ($this->italic ? 't' : 'f') . ($this->superScript ? 't' : 'f') . ($this->subScript ? 't' : 'f') . $this->underline . $this->strikethrough . $this->color->getHashCode() . __CLASS__);
     }
 
     /**

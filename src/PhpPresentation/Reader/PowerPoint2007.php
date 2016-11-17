@@ -840,13 +840,13 @@ class PowerPoint2007 implements ReaderInterface
                         $oText = $oParagraph->createTextRun();
 
                         if ($oElementrPr->hasAttribute('b')) {
-                            $oText->getFont()->setBold($oElementrPr->getAttribute('b') == 'true' ? true : false);
+                            $oText->getFont()->setBold($oElementrPr->getAttribute('b'));
                         }
                         if ($oElementrPr->hasAttribute('i')) {
-                            $oText->getFont()->setItalic($oElementrPr->getAttribute('i') == 'true' ? true : false);
+                            $oText->getFont()->setItalic($oElementrPr->getAttribute('i'));
                         }
                         if ($oElementrPr->hasAttribute('strike')) {
-                            $oText->getFont()->setStrikethrough($oElementrPr->getAttribute('strike') == 'noStrike' ? false : true);
+                            $oText->getFont()->setStrikethrough($oElementrPr->getAttribute('strike'));
                         }
                         if ($oElementrPr->hasAttribute('sz')) {
                             $oText->getFont()->setSize((int)($oElementrPr->getAttribute('sz') / 100));
