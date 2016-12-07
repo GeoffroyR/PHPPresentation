@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Reader;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
@@ -629,6 +630,15 @@ class PowerPoint2007 implements ReaderInterface
         if ($oElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
+
+            $hlinkClick = $document->getElement('a:hlinkClick', $oElement);
+            if ($hlinkClick
+                && $hlinkClick->hasAttribute('r:id')
+                && isset($this->arrayRels[$fileRels][$hlinkClick->getAttribute('r:id')]['Target'])
+            ){
+                $hyperLink = new Hyperlink($this->arrayRels[$fileRels][$hlinkClick->getAttribute('r:id')]['Target']);
+                $oShape->setHyperlink($hyperLink);
+            }
         }
 
         $oElement = $document->getElement('p:blipFill/a:blip', $node);
@@ -761,6 +771,16 @@ class PowerPoint2007 implements ReaderInterface
             if ($oElement->hasAttribute('type')) {
                 $placeholder = new Placeholder($oElement->getAttribute('type'));
                 $oShape->setPlaceHolder($placeholder);
+            }
+        }
+
+        $oElement = $document->getElement('p:nvSpPr/p:cNvPr/a:hlinkClick', $node);
+        if ($oElement) {
+            if($oElement->hasAttribute('r:id')
+                && isset($this->arrayRels[$fileRels][$oElement->getAttribute('r:id')]['Target'])
+            ) {
+                $hyperLink = new Hyperlink($this->arrayRels[$fileRels][$oElement->getAttribute('r:id')]['Target']);
+                $oShape->setHyperlink($hyperLink);
             }
         }
 
